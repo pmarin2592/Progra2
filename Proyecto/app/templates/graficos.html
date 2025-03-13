@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <title>Gráficos - Análisis de Sentimientos</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/graficos.css') }}">
+</head>
+
+<body>
+    <div class="container">
+        <!-- Encabezado -->
+        <header>
+            <h1>Análisis de Sentimientos</h1>
+            <a href="/" class="back-button">⬅️ Volver al Inicio</a>
+        </header>
+
+        <!-- Contenedor del Dashboard -->
+        <main class="dashboard-container">
+           <iframe id="dashboardFrame" src="/dashboard/" title="Dashboard de Sentimientos"></iframe>
+        </main>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cargar Datos</title>
+    <link href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+</head>
+<body>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <script type="text/javascript">
+                // Mostramos el mensaje emergente
+                alert("{{ messages[0] }}");
+            </script>
+        {% endif %}
+    {% endwith %}
+    <h1>Selecciona la Fuente de Datos</h1>
+
+    <form method="POST" enctype="multipart/form-data">
+        <!-- Opciones de fuente de datos -->
+        <label for="data_source_db">Base de Datos</label>
+        <input type="radio" name="data_source" value="db" id="data_source_db" checked>
+        <label for="data_source_csv">Archivo CSV</label>
+        <input type="radio" name="data_source" value="csv" id="data_source_csv">
+
+        <!-- Cargar archivo CSV -->
+        <div id="csv-options" style="display:none;">
+            <input type="file" name="csv_file" id="csv_file">
+            <label for="delimiter">Delimitador:</label>
+            <select name="delimiter" id="delimiter">
+                <option value=",">Coma (,) </option>
+                <option value=";">Punto y coma (;)</option>
+                <option value="\t">Tabulador</option>
+            </select>
+        </div>
+
+        <button type="submit">Cargar Datos</button>
+    </form>
+
+    <br><br>
+
+    <h2>Datos Cargados</h2>
+    <table id="data-table" class="display">
+        <thead>
+            <tr>
+                <th>Comentario</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in data %}
+                <tr>
+                    <td>{{ row.texto }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h2>Resumen de Datos</h2>
+    <table id="summary-table" class="display">
+        <thead>
+            <tr>
+                <th>Descripción</th>
+                <th>Valor</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Filas Totales</td>
+                <td>{{ summary.row_count }}</td>
+            </tr>
+            <tr>
+                <td>Columnas Totales</td>
+                <td>{{ summary.column_count }}</td>
+            </tr>
+            <tr>
+                <td>Primer Comentario</td>
+                <td>{{ summary.first_comment }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <br>
+    <a href="{{ url_for('graficos') }}">
+        <button>Generar Gráficos</button>
+    </a>
+
+    <script>
+        // Mostrar opciones de CSV cuando se seleccione "Archivo CSV"
+        $('input[type=radio][name=data_source]').change(function() {
+            if (this.value == 'csv') {
+                $('#csv-options').show();
+            } else {
+                $('#csv-options').hide();
+            }
+        });
+
+        // Inicializar DataTable
+        $(document).ready(function() {
+            $('#data-table').DataTable();
+            $('#summary-table').DataTable();
+        });
+    </script>
+</body>
+</html>
