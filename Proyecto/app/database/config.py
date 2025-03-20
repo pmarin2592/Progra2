@@ -1,6 +1,5 @@
 from app.database.encryption import decrypt_message
 
-
 # -------------------------------
 # 🔒 CONFIGURACIÓN DE BASE DE DATOS
 # -------------------------------
@@ -21,5 +20,10 @@ class Config:
         """
         Método para obtener la contraseña desencriptada.
         Utiliza la función `decrypt_message` del módulo `encryption`.
+        Maneja posibles errores de desencriptación.
         """
-        return decrypt_message(cls.PASSWORD_ENCRYPTED)
+        try:
+            return decrypt_message(cls.PASSWORD_ENCRYPTED)
+        except Exception as e:
+            print(f"Error al desencriptar la contraseña: {e}")
+            return None
